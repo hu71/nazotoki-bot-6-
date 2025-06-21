@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>判定フォーム</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .user-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .user-id {
+            font-weight: bold;
+        }
+        .progress {
+            color: #555;
+        }
+        img {
+            max-width: 300px;
+            display: block;
+            margin-top: 10px;
+        }
+        form {
+            margin-top: 10px;
+        }
+        button {
+            margin-right: 10px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>画像判定フォーム</h1>
+    {% if users %}
+        {% for user_id, image_url in users.items() %}
+        <div class="user-box">
+            <div class="user-id">ユーザーID: {{ user_id }}</div>
+            <div class="progress">現在のステージ: 第{{ user_states[user_id]["stage"] + 1 }}問</div>
+            <img src="{{ image_url }}" alt="画像が表示されない場合は再読み込みしてください">
+            <form action="/judge" method="post">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <button type="submit" name="result" value="correct">正解</button>
+                <button type="submit" name="result" value="incorrect">不正解</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>判定待ちの画像はありません。</p>
+    {% endif %}
+</body>
+</html>
